@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main() {
-    std::cout << "Habit, world!" << std::endl;
-    return 0;
+  std::cout << "Habit, world!" << std::endl;
+  return 0;
 }
