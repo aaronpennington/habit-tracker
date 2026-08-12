@@ -1,6 +1,10 @@
 #include <iostream>
 
+#include "habit.h"
+
 int main() {
-  std::cout << "Habit, world!" << std::endl;
+  Habit test_habit(0, "test", "A simple test");
+  std::cout << test_habit.name() << ": " << test_habit.desc() << std::endl;
+
   return 0;
 }
