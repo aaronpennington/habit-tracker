@@ -26,8 +26,14 @@ endif()
 if(CMAKE_FORMAT_EXE)
   message(STATUS "Found cmake-format: ${CMAKE_FORMAT_EXE}")
 
-  file(GLOB_RECURSE _CMAKE_FILES "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
-       "${CMAKE_SOURCE_DIR}/*.cmake")
+  # search for cmake files, excluding third-party directory
+  file(
+    GLOB_RECURSE
+    _CMAKE_FILES
+    "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
+    "${CMAKE_SOURCE_DIR}/src/CMakeLists.txt"
+    "${CMAKE_SOURCE_DIR}/cmake/CMakeLists.txt"
+    "${CMAKE_SOURCE_DIR}/cmake/*.cmake")
 
   add_custom_target(
     cmakeformat

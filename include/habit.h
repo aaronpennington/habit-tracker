@@ -10,6 +10,7 @@ class Habit {
   Habit(int id, std::string name, std::string desc)
       : id_(id), name_(std::move(name)), desc_(std::move(desc)) {}
 
+  int const& id() const { return id_; }
   std::string const& name() const { return name_; }
   std::string const& desc() const { return desc_; }
   void name(std::string const& new_name) { name_ = std::move(new_name); }
