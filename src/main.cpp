@@ -1,13 +1,18 @@
-#include <iostream>
 #include <SQLiteCpp/SQLiteCpp.h>
 
+#include <iostream>
+
 #include "habit.h"
+#include "goal.h"
 
 void database();
 
 int main() {
-  Habit test_habit(0, "test", "A simple test");
-  std::cout << test_habit.name() << ": " << test_habit.desc() << std::endl;
+  Goal goal;
+  goal.name("test goal");
+  Habit habit;
+  habit.goal(goal);
+  std::cout << habit.goal().name() << std::endl;
 
   database();
 
@@ -18,7 +23,8 @@ void database() {
   // testing sqlite database transaction
   try {
     // Open db file
-    SQLite::Database db("example.db3", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    SQLite::Database db("example.db3",
+                        SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 
     db.exec("DROP TABLE IF EXISTS test");
 
@@ -28,12 +34,12 @@ void database() {
     db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT)");
 
     int nb = db.exec("INSERT INTO test VALUES (NULL, \"test\")");
-    std::cout << "INSERT INTO test VALUES (NULL, \"test\")\", returned " << nb << std::endl;
+    std::cout << "INSERT INTO test VALUES (NULL, \"test\")\", returned " << nb
+              << std::endl;
 
-    // Commit transaction 
+    // Commit transaction
     transaction.commit();
-  }
-  catch (std::exception& e) {
+  } catch (std::exception& e) {
     std::cout << "exception: " << e.what() << std::endl;
   }
 }

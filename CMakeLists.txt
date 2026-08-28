@@ -4,6 +4,7 @@ project(habit-tracker LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
 
 enable_testing()
 
