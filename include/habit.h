@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "goal.h"
 
 class Habit {
@@ -9,7 +10,7 @@ class Habit {
   Goal goal_;
 
  public:
-  Habit() {};
+  Habit(){};
   Habit(int id, std::string name, std::string desc)
       : id_(id), name_(std::move(name)), desc_(std::move(desc)) {}
 
@@ -26,6 +27,6 @@ class Habit {
   void goal(Goal goal);
 
   // Access database
-  bool write_database(Habit habit);
-  Habit read_database();
+  bool write_database(Habit habit, std::string filename);
+  Habit read_database(std::string filename);
 };

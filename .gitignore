@@ -20,3 +20,4 @@ CMakeUserPresets.json
 
 build*
 .venv*
+todo.md

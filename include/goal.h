@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "goal.h"
 
 // Each habit should be tied to a long-term goal.
