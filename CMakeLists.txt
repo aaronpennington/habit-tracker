@@ -13,10 +13,10 @@ add_subdirectory(cmake)
 
 add_executable(habit-tracker)
 
+add_subdirectory(src)
+
 # third-party libraries
 add_subdirectory(third-party)
-
-add_subdirectory(src)
 
 # Unit tests
 add_subdirectory(tests)

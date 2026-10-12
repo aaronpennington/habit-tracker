@@ -19,13 +19,13 @@ int main() {
 
   // Open db file
   std::string filename = "test.db";
-  SQLite::Database db(filename,
-                      SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+  SQLite::Database db(filename, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 
   create_db_tables(db);
   test_insert_db(goal, db);
   Goal new_goal = test_read_db(db);
-  std::cout << new_goal.id() << " " << new_goal.name() << " / " << new_goal.desc() << std::endl;
+  std::cout << new_goal.id() << " " << new_goal.name() << " / "
+            << new_goal.desc() << std::endl;
 
   return 0;
 }
@@ -43,21 +43,21 @@ void create_db_tables(SQLite::Database& db) {
     // Begin transaction
     SQLite::Transaction transaction(db);
 
-    std::string create_goal_table = 
-      "CREATE TABLE IF NOT EXISTS goals ("
-      "   id INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "   name TEXT,"
-      "   desc TEXT"
-      ");";
+    std::string create_goal_table =
+        "CREATE TABLE IF NOT EXISTS goals ("
+        "   id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "   name TEXT,"
+        "   desc TEXT"
+        ");";
 
-    std::string create_habit_table = 
-      "CREATE TABLE IF NOT EXISTS habits ("
-      "   id INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "   goal_id INTEGER,"
-      "   name TEXT,"
-      "   desc TEXT,"
-      "   FOREIGN KEY(goal_id) REFERENCES goals(id)"
-      ");";
+    std::string create_habit_table =
+        "CREATE TABLE IF NOT EXISTS habits ("
+        "   id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "   goal_id INTEGER,"
+        "   name TEXT,"
+        "   desc TEXT,"
+        "   FOREIGN KEY(goal_id) REFERENCES goals(id)"
+        ");";
 
     db.exec(create_goal_table);
     std::cout << "Created goals table" << std::endl;
@@ -72,14 +72,14 @@ void create_db_tables(SQLite::Database& db) {
 }
 
 void test_insert_db(Goal g, SQLite::Database& db) {
-  try{
-  // should use some kind of SQLite::Statement and query.bind();
-  SQLite::Statement query(db, "INSERT INTO goals (name, desc) VALUES (?, ?)");
-  query.bind(1, g.name());
-  query.bind(2, g.desc());
+  try {
+    // should use some kind of SQLite::Statement and query.bind();
+    SQLite::Statement query(db, "INSERT INTO goals (name, desc) VALUES (?, ?)");
+    query.bind(1, g.name());
+    query.bind(2, g.desc());
 
-  auto rows = query.exec();
-  std::cout << "Inserted " << rows << " row(s)." << std::endl;
+    auto rows = query.exec();
+    std::cout << "Inserted " << rows << " row(s)." << std::endl;
   } catch (std::exception& e) {
     std::cerr << "SQLiteCpp exception: " << e.what() << "\n";
   }

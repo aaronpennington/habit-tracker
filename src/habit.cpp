@@ -10,7 +10,7 @@ void Habit::goal(Goal goal) { goal_ = goal; }
 
 bool Habit::write_database(Habit habit, std::string filename) {
   // TODO: Get database instance.
-  
+
   return false;
 }
 
