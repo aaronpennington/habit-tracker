@@ -21,6 +21,7 @@ class Goal {
   int const& id() const { return id_; }
   std::string const& name() const { return name_; }
   std::string const& desc() const { return desc_; }
+  void id(int const& new_id) { id_ = std::move(new_id); }
   void name(std::string const& new_name) { name_ = std::move(new_name); }
   void desc(std::string const& new_desc) { desc_ = std::move(new_desc); }
 };
