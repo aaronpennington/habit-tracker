@@ -1,4 +1,6 @@
 #pragma once
+#include <SQLiteCpp/SQLiteCpp.h>
+
 #include <string>
 
 #include "goal.h"
@@ -27,6 +29,6 @@ class Habit {
   void goal(Goal goal);
 
   // Access database
-  bool write_database(Habit habit, std::string filename);
-  Habit read_database(std::string filename);
+  static Habit read_habit_from_database(int habit_id, SQLite::Database& db);
+  int write_habit_to_database(SQLite::Database& db);
 };

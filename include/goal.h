@@ -1,6 +1,7 @@
 #pragma once
-#include <string>
 #include <SQLiteCpp/SQLiteCpp.h>
+
+#include <string>
 #include <utility>
 
 // Each habit should be tied to a long-term goal.
@@ -23,9 +24,10 @@ class Goal {
   int const& id() const;
   std::string const& name() const;
   std::string const& desc() const;
-  void id(int const& new_id);
-  void name(std::string const& new_name);
-  void desc(std::string const& new_desc);
+  void id(const int& new_id);
+  void name(const std::string& new_name);
+  void desc(const std::string& new_desc);
 
-  bool read_db(SQLite::Database& db);
+  static Goal read_goal_from_db(int id, SQLite::Database& db);
+  int write_goal_to_db(SQLite::Database& db);
 };
