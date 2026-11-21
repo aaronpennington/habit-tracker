@@ -1,12 +1,16 @@
 #include <SQLiteCpp/SQLiteCpp.h>
 
+#include <ftxui/ftxui.hpp>
 #include <iostream>
 
 #include "goal.h"
 #include "habit.h"
 
+using namespace ftxui;
+
 void drop_tables(SQLite::Database& db);
 void create_db_tables(SQLite::Database& db);
+void ftxui_test();
 
 int main() {
   Goal goal;
@@ -37,7 +41,10 @@ int main() {
   Habit new_habit = habit.read_habit_from_database(habit.id(), db);
   std::cout << new_habit.id() << " " << new_habit.name() << " / "
             << new_habit.desc() << " || Belongs to goal named '"
-            << new_habit.goal().name() << "' with id " << new_habit.goal().id() << std::endl;
+            << new_habit.goal().name() << "' with id " << new_habit.goal().id()
+            << std::endl;
+
+  ftxui_test();
 
   return 0;
 }
@@ -88,4 +95,24 @@ void create_db_tables(SQLite::Database& db) {
   } catch (std::exception& e) {
     std::cout << "exception: " << e.what() << std::endl;
   }
+}
+
+void ftxui_test() {
+  auto document = vbox({
+      hbox({
+          text("one") | border,
+          text("two") | border | flex,
+          text("three") | border | flex,
+      }),
+
+      gauge(0.25) | color(Color::Red),
+      gauge(0.50) | color(Color::White),
+      gauge(0.75) | color(Color::Blue),
+  });
+
+  auto screen = Screen::Create(Dimension::Full());
+  Render(screen, document);
+  screen.Print();
+
+  return;
 }
