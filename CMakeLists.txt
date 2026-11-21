@@ -11,7 +11,13 @@ enable_testing()
 # include cmake folder
 add_subdirectory(cmake)
 
-add_executable(habit-tracker)
+set(PROJECT_SOURCES
+  src/main.cpp
+  src/goal.cpp
+  src/habit.cpp
+)
+
+add_executable(habit-tracker ${PROJECT_SOURCES})
 
 add_subdirectory(src)
 

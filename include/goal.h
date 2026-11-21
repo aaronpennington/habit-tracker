@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <utility>
 
 // Each habit should be tied to a long-term goal.
 // For example, if your goal is "to eat healthier foods like fruit and
@@ -24,4 +26,6 @@ class Goal {
   void id(int const& new_id);
   void name(std::string const& new_name);
   void desc(std::string const& new_desc);
+
+  bool read_db(SQLite::Database& db);
 };

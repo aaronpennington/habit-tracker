@@ -3,7 +3,7 @@ include(FetchContent)
 # SQLite library
 message("Building SQLiteCpp...")
 add_subdirectory(SQLiteCpp)
-target_link_libraries(habit-tracker SQLiteCpp sqlite3 pthread dl)
+target_link_libraries(habit_core SQLiteCpp sqlite3 pthread dl)
 
 # googletest library TODO: Make googletest target EXCLUDE_FROM_ALL in build
 FetchContent_Declare(
