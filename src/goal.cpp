@@ -1,4 +1,5 @@
 #include "goal.h"
+
 #include <iostream>
 
 int const& Goal::id() const { return id_; }
@@ -15,7 +16,8 @@ void Goal::desc(const std::string& new_desc) { desc_ = std::move(new_desc); }
 
 Goal Goal::read_goal_from_db(int id, SQLite::Database& db) {
   try {
-    SQLite::Statement query(db, "SELECT id, name, desc FROM goals WHERE id = (?)");
+    SQLite::Statement query(db,
+                            "SELECT id, name, desc FROM goals WHERE id = (?)");
     query.bind(1, id);
     query.executeStep();
 
@@ -28,4 +30,24 @@ Goal Goal::read_goal_from_db(int id, SQLite::Database& db) {
     std::cerr << "SQLiteCpp exception: " << e.what() << std::endl;
     return Goal();
   }
+}
+
+int Goal::write_goal_to_db(SQLite::Database& db) {
+  // return number of rows inserted, or -1 if unable to write
+  try {
+    SQLite::Statement query(
+        db, "INSERT INTO goals (id, name, desc) VALUES (?, ?, ?)");
+    query.bind(1, this->id());
+    query.bind(2, this->name());
+    query.bind(3, this->desc());
+
+    auto rows = query.exec();
+    std::cout << "Inserted " << rows << " row(s)." << std::endl;
+
+    return rows;
+  } catch (std::exception& e) {
+    std::cerr << "SQLiteCpp exception: " << e.what() << "\n";
+    return -1;
+  }
+  return -1;
 }

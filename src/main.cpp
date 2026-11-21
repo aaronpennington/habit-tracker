@@ -5,8 +5,8 @@
 #include "goal.h"
 #include "habit.h"
 
+void drop_tables(SQLite::Database& db);
 void create_db_tables(SQLite::Database& db);
-void test_insert_db(Goal g, SQLite::Database& db);
 
 int main() {
   Goal goal;
@@ -14,20 +14,43 @@ int main() {
   goal.name("test goal");
   goal.desc("test goal desc");
   Habit habit;
+  habit.id(777);
+  habit.name("My habit!");
+  habit.desc("This habit is very important.");
   habit.goal(goal);
-  std::cout << habit.goal().name() << std::endl;
 
   // Open db file
   std::string filename = "test.db";
   SQLite::Database db(filename, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 
+  drop_tables(db);
   create_db_tables(db);
-  test_insert_db(goal, db);
+
+  // Write and read from goals table
+  goal.write_goal_to_db(db);
   Goal new_goal = goal.read_goal_from_db(1, db);
   std::cout << new_goal.id() << " " << new_goal.name() << " / "
             << new_goal.desc() << std::endl;
 
+  // Write and read from habits table
+  habit.write_habit_to_database(db);
+  Habit new_habit = habit.read_habit_from_database(habit.id(), db);
+  std::cout << new_habit.id() << " " << new_habit.name() << " / "
+            << new_habit.desc() << " || Belongs to goal named '"
+            << new_habit.goal().name() << "' with id " << new_habit.goal().id() << std::endl;
+
   return 0;
+}
+
+void drop_tables(SQLite::Database& db) {
+  try {
+    db.exec("DROP TABLE IF EXISTS goals");
+    std::cout << "Dropped 'goals' table" << std::endl;
+    db.exec("DROP TABLE IF EXISTS habits");
+    std::cout << "Dropped 'habits' table" << std::endl;
+  } catch (std::exception& e) {
+    std::cout << "drop_talbes exception: " << e.what() << std::endl;
+  }
 }
 
 void create_db_tables(SQLite::Database& db) {
@@ -35,10 +58,6 @@ void create_db_tables(SQLite::Database& db) {
   try {
     // Enable foreign key support for this connection
     db.exec("PRAGMA foreign_keys = ON;");
-
-    db.exec("DROP TABLE IF EXISTS test");
-    db.exec("DROP TABLE IF EXISTS goals");
-    db.exec("DROP TABLE IF EXISTS habits");
 
     // Begin transaction
     SQLite::Transaction transaction(db);
@@ -60,28 +79,13 @@ void create_db_tables(SQLite::Database& db) {
         ");";
 
     db.exec(create_goal_table);
-    std::cout << "Created goals table" << std::endl;
+    std::cout << "Created 'goals' table" << std::endl;
     db.exec(create_habit_table);
-    std::cout << "Created habits table" << std::endl;
+    std::cout << "Created 'habits' table" << std::endl;
 
     // Commit transaction
     transaction.commit();
   } catch (std::exception& e) {
     std::cout << "exception: " << e.what() << std::endl;
-  }
-}
-
-void test_insert_db(Goal g, SQLite::Database& db) {
-  try {
-    // should use some kind of SQLite::Statement and query.bind();
-    SQLite::Statement query(db, "INSERT INTO goals (id, name, desc) VALUES (?, ?, ?)");
-    query.bind(1, g.id());
-    query.bind(2, g.name());
-    query.bind(3, g.desc());
-
-    auto rows = query.exec();
-    std::cout << "Inserted " << rows << " row(s)." << std::endl;
-  } catch (std::exception& e) {
-    std::cerr << "SQLiteCpp exception: " << e.what() << "\n";
   }
 }
