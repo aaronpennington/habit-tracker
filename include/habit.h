@@ -29,6 +29,6 @@ class Habit {
   void goal(Goal goal);
 
   // Access database
-  Habit read_habit_from_database(int habit_id, SQLite::Database& db);
+  static Habit read_habit_from_database(int habit_id, SQLite::Database& db);
   int write_habit_to_database(SQLite::Database& db);
 };
