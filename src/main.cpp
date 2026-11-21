@@ -7,10 +7,10 @@
 
 void create_db_tables(SQLite::Database& db);
 void test_insert_db(Goal g, SQLite::Database& db);
-Goal test_read_db(SQLite::Database& db);
 
 int main() {
   Goal goal;
+  goal.id(1);
   goal.name("test goal");
   goal.desc("test goal desc");
   Habit habit;
@@ -23,7 +23,7 @@ int main() {
 
   create_db_tables(db);
   test_insert_db(goal, db);
-  Goal new_goal = test_read_db(db);
+  Goal new_goal = goal.read_goal_from_db(1, db);
   std::cout << new_goal.id() << " " << new_goal.name() << " / "
             << new_goal.desc() << std::endl;
 
@@ -74,29 +74,14 @@ void create_db_tables(SQLite::Database& db) {
 void test_insert_db(Goal g, SQLite::Database& db) {
   try {
     // should use some kind of SQLite::Statement and query.bind();
-    SQLite::Statement query(db, "INSERT INTO goals (name, desc) VALUES (?, ?)");
-    query.bind(1, g.name());
-    query.bind(2, g.desc());
+    SQLite::Statement query(db, "INSERT INTO goals (id, name, desc) VALUES (?, ?, ?)");
+    query.bind(1, g.id());
+    query.bind(2, g.name());
+    query.bind(3, g.desc());
 
     auto rows = query.exec();
     std::cout << "Inserted " << rows << " row(s)." << std::endl;
   } catch (std::exception& e) {
     std::cerr << "SQLiteCpp exception: " << e.what() << "\n";
-  }
-}
-
-Goal test_read_db(SQLite::Database& db) {
-  try {
-    SQLite::Statement query(db, "SELECT id, name, desc FROM goals");
-    Goal goal;
-    query.executeStep();
-    goal.id(query.getColumn(0));
-    goal.name(query.getColumn(1));
-    goal.desc(query.getColumn(2));
-
-    return goal;
-  } catch (std::exception& e) {
-    std::cerr << "SQLiteCpp exception: " << e.what() << std::endl;
-    return Goal();
   }
 }

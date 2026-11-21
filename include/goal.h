@@ -27,5 +27,5 @@ class Goal {
   void name(std::string const& new_name);
   void desc(std::string const& new_desc);
 
-  bool read_db(SQLite::Database& db);
+  Goal read_goal_from_db(int id, SQLite::Database& db);
 };
