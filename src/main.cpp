@@ -5,12 +5,10 @@
 
 #include "goal.h"
 #include "habit.h"
-
-using namespace ftxui;
+#include "tui.h"
 
 void drop_tables(SQLite::Database& db);
 void create_db_tables(SQLite::Database& db);
-void ftxui_test();
 
 int main() {
   Goal goal;
@@ -44,7 +42,7 @@ int main() {
             << new_habit.goal().name() << "' with id " << new_habit.goal().id()
             << std::endl;
 
-  ftxui_test();
+  habit_tracker::create_tui();
 
   return 0;
 }
@@ -95,24 +93,4 @@ void create_db_tables(SQLite::Database& db) {
   } catch (std::exception& e) {
     std::cout << "exception: " << e.what() << std::endl;
   }
-}
-
-void ftxui_test() {
-  auto document = vbox({
-      hbox({
-          text("one") | border,
-          text("two") | border | flex,
-          text("three") | border | flex,
-      }),
-
-      gauge(0.25) | color(Color::Red),
-      gauge(0.50) | color(Color::White),
-      gauge(0.75) | color(Color::Blue),
-  });
-
-  auto screen = Screen::Create(Dimension::Full());
-  Render(screen, document);
-  screen.Print();
-
-  return;
 }

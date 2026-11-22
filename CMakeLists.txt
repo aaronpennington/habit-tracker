@@ -11,7 +11,7 @@ enable_testing()
 # include cmake folder
 add_subdirectory(cmake)
 
-set(PROJECT_SOURCES src/main.cpp src/goal.cpp src/habit.cpp)
+set(PROJECT_SOURCES src/main.cpp src/goal.cpp src/habit.cpp src/tui.cpp)
 
 add_executable(habit-tracker ${PROJECT_SOURCES})
 
