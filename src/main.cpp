@@ -1,9 +1,11 @@
 #include <SQLiteCpp/SQLiteCpp.h>
 
+#include <ftxui/ftxui.hpp>
 #include <iostream>
 
 #include "goal.h"
 #include "habit.h"
+#include "tui.h"
 
 void drop_tables(SQLite::Database& db);
 void create_db_tables(SQLite::Database& db);
@@ -37,7 +39,10 @@ int main() {
   Habit new_habit = habit.read_habit_from_database(habit.id(), db);
   std::cout << new_habit.id() << " " << new_habit.name() << " / "
             << new_habit.desc() << " || Belongs to goal named '"
-            << new_habit.goal().name() << "' with id " << new_habit.goal().id() << std::endl;
+            << new_habit.goal().name() << "' with id " << new_habit.goal().id()
+            << std::endl;
+
+  habit_tracker::create_tui();
 
   return 0;
 }

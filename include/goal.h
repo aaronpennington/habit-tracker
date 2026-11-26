@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 // Each habit should be tied to a long-term goal.
 // For example, if your goal is "to eat healthier foods like fruit and
@@ -29,5 +30,7 @@ class Goal {
   void desc(const std::string& new_desc);
 
   static Goal read_goal_from_db(int id, SQLite::Database& db);
+  static std::vector<Goal> read_all_goals_from_db(SQLite::Database& db);
+
   int write_goal_to_db(SQLite::Database& db);
 };
