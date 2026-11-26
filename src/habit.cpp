@@ -53,3 +53,26 @@ int Habit::write_habit_to_database(SQLite::Database& db) {
   }
   return -1;
 }
+
+std::vector<Habit> Habit::read_all_habits_from_database(SQLite::Database& db) {
+  std::vector<Habit> habits;
+
+  try {
+    SQLite::Statement query(db, "SELECT id, name, desc, goal_id FROM habits");
+    while (query.executeStep()) {
+      Habit h;
+      h.id(query.getColumn(0));
+      h.name(query.getColumn(1));
+      h.desc(query.getColumn(2));
+
+      auto g = Goal::read_goal_from_db(query.getColumn(3), db);
+      h.goal(g);
+
+      habits.push_back(h);
+    }
+  } catch (std::exception& e) {
+    std::cerr << "SQLiteCpp exception: " << e.what() << "\n";
+  }
+
+  return habits;
+}

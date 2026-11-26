@@ -2,6 +2,7 @@
 #include <SQLiteCpp/SQLiteCpp.h>
 
 #include <string>
+#include <vector>
 
 #include "goal.h"
 
@@ -30,5 +31,6 @@ class Habit {
 
   // Access database
   static Habit read_habit_from_database(int habit_id, SQLite::Database& db);
+  static std::vector<Habit> read_all_habits_from_database(SQLite::Database& db);
   int write_habit_to_database(SQLite::Database& db);
 };

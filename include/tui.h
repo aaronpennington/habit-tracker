@@ -5,5 +5,4 @@
 namespace habit_tracker {
 
 void create_tui();
-
 }

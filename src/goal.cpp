@@ -51,3 +51,22 @@ int Goal::write_goal_to_db(SQLite::Database& db) {
   }
   return -1;
 }
+
+std::vector<Goal> Goal::read_all_goals_from_db(SQLite::Database& db) {
+  std::vector<Goal> goals;
+  try {
+    SQLite::Statement query(db, "SELECT id, name, desc FROM goals");
+
+    while (query.executeStep()) {
+      Goal g;
+      g.id(query.getColumn(0));
+      g.name(query.getColumn(1));
+      g.desc(query.getColumn(2));
+      goals.push_back(g);
+    }
+
+  } catch (std::exception& e) {
+    std::cerr << "SQLiteCpp exception: " << e.what() << "\n";
+  }
+  return goals;
+}
